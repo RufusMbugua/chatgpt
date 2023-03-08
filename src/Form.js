@@ -1,5 +1,6 @@
 import { memo, useState, useEffect } from "react";
 import { useData } from './data';
+import { industries } from './helpers';
 
 const label = "mb-2 block text-sm font-semibold";
 const input = "bg-gray-200 border rounded  text-base font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2";
@@ -11,7 +12,7 @@ const Form = () => {
     const [ready, setReady] = useState(false);
     const [formated, setFormated] = useState('');
 
-    const { loading, search, responses } = useData();
+    const { loading, search, error, responses } = useData();
 
     const onSelectChange = ({ target }) => {
         setIndustry(target.value);
@@ -27,6 +28,7 @@ const Form = () => {
         }
     }, [industry, question])
 
+    const renderOptions = () => industries.map(e => <option key={e} value={e}>{e}</option>)
 
     const onChange = ({ target }) => {
         setQuestion(target.value);
@@ -49,9 +51,8 @@ const Form = () => {
                                 <section className="w-full mb-4">
                                     <label className={label}>Industry:</label>
                                     <select disabled={loading} className={input} value={industry} onChange={onSelectChange}>
-                                        <option disabled>Select Industry</option>
-                                        <option value="Landscaper">Landscaper</option>
-                                        <option value="Banker">Banker</option>
+                                        <option>Select Industry</option>
+                                        {renderOptions()}
                                     </select>
 
                                 </section>
@@ -70,6 +71,11 @@ const Form = () => {
                                 <section className="w-full my-4">
                                     <button disabled={loading || !ready} onClick={handleSearch} type="button" className="block text-center text-white bg-purple-700 hover:bg-purple-900 px-4 py-1.5 rounded disabled:bg-gray-200 disabled:text-gray-400">Submit Question</button>
                                 </section>
+                                {error ? (
+                                    <section className="max-h-40 overflow-y-auto w-full bg-gray-100 rounded mb-3 p-6 text-red-600">
+                                        {error}
+                                    </section>
+                                ) : null}
                                 <section className="max-h-40 overflow-y-auto w-full bg-gray-100 rounded mb-3 p-6 text-gray-600">
                                     {responses?.length && !loading ? <>{responses}</> : <>{loading ? 'Processing...' : 'No Response'}</>}
                                 </section>

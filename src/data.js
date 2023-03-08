@@ -9,21 +9,26 @@ const openai = new OpenAIApi(configuration);
 
 export function useData() {
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(null);
     const [responses, setResponses] = useState(null);
 
     const search = async (keyword) => {
         setLoading(true);
 
-        const response = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: keyword,
-            temperature: 0.7,
-            max_tokens: 256,
-        });
-        setLoading(false);
+        try {
+            const response = await openai.createCompletion({
+                model: "text-davinci-003",
+                prompt: keyword,
+                temperature: 0.7,
+                max_tokens: 256,
+            });
+            setLoading(false);
 
-        setResponses(response?.data?.choices?.map(e => e.text));
+            setResponses(response?.data?.choices?.map(e => e.text));
+        } catch (error) {
+            setLoading(false);
+            setError(error.message);
+        }
     };
 
     return {
