@@ -72,7 +72,7 @@ const Form = () => {
                                     <button disabled={loading || !ready} onClick={handleSearch} type="button" className="block text-center text-white bg-purple-700 hover:bg-purple-900 px-4 py-1.5 rounded disabled:bg-gray-200 disabled:text-gray-400">Submit Question</button>
                                 </section>
                                 {error ? (
-                                    <section className="max-h-40 overflow-y-auto w-full bg-gray-100 rounded mb-3 p-6 text-red-600">
+                                    <section className="max-h-40 border border-red-300 overflow-y-auto w-full bg-gray-100 rounded mb-3 py-3 px-6 text-red-600">
                                         {error}
                                     </section>
                                 ) : null}

@@ -14,7 +14,7 @@ export function useData() {
 
     const search = async (keyword) => {
         setLoading(true);
-
+        setError(null);
         try {
             const response = await openai.createCompletion({
                 model: "text-davinci-003",
